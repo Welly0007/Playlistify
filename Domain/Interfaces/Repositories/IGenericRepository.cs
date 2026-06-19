@@ -8,5 +8,6 @@ namespace Domain.Interfaces.Repositories
 		void Update(T entity);
 		void Delete(T entity);
 		public Task SaveChangesAsync();
+		IQueryable<T> GetReadOnlyQuery();
 	}
 }

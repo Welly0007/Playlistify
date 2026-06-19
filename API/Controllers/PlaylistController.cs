@@ -1,6 +1,7 @@
 ﻿using API.DTOs;
 using Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -16,16 +17,35 @@ namespace API.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetAllPlaylists()
 		{
-			var playlists = await _playlistService.GetAllPlaylistsAsync();
-			var response = playlists.Select(p => new PlaylistsResultDto
+			try
 			{
-				Id = p.Id,
-				Name = p.Name,
-				Description = p.Description,
-				TotalDuration = p.TotalDuration,
-				SongCount = p.Songs.Count
-			}).ToList();
-			return Ok(response);
+				var query = _playlistService.GetPlaylistsQuery();
+
+				var dbResult = await query.Select(p => new
+				{
+					p.Id,
+					p.Name,
+					p.Description,
+					SongCount = p.Songs.Count,
+					SongDurations = p.Songs.Select(s => s.Duration).ToList()
+				}).ToListAsync();
+
+				// 2. Client Level: Map to your final DTO and sum the durations in memory
+				var response = dbResult.Select(p => new PlaylistsResultDto
+				{
+					Id = p.Id,
+					Name = p.Name,
+					Description = p.Description,
+					SongCount = p.SongCount,
+					TotalDuration = TimeSpan.FromTicks(p.SongDurations.Sum(d => d.Ticks))
+				}).ToList();
+
+				return Ok(response);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, $"Internal server error: {ex.Message}");
+			}
 		}
 
 		[HttpGet("{id}")]
@@ -39,10 +59,11 @@ namespace API.Controllers
 				Id = playlist.Id,
 				Name = playlist.Name,
 				Description = playlist.Description,
-				TotalDuration = playlist.TotalDuration,
+				TotalDuration = TimeSpan.FromTicks(playlist.Songs.Sum(s => s.Duration.Ticks)),
 				SongCount = playlist.Songs.Count,
 				Songs = playlist.Songs.Select(s => new SongResultDto
 				{
+					Id = s.Id,
 					Title = s.Title,
 					Artist = s.Artist,
 					Duration = s.Duration
@@ -63,7 +84,7 @@ namespace API.Controllers
 					Id = playlist.Id,
 					Name = playlist.Name,
 					Description = playlist.Description,
-					TotalDuration = playlist.TotalDuration,
+					TotalDuration = TimeSpan.FromTicks(playlist.Songs.Sum(s => s.Duration.Ticks)),
 					SongCount = playlist.Songs.Count
 				};
 				return Ok(response);

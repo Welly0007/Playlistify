@@ -4,7 +4,7 @@ namespace Domain.Interfaces.Services
 {
 	public interface IPlaylistService
 	{
-		public Task<IEnumerable<Playlist>> GetAllPlaylistsAsync();
+		IQueryable<Playlist> GetPlaylistsQuery();
 		public Task<Playlist?> GetPlaylistByIdAsync(Guid id);
 		public Task<Playlist> CreatePlaylistAsync(string name, string description);
 		public Task AddSongToPlaylistAsync(Guid playlistId, Guid songId);

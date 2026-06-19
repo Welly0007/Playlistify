@@ -15,9 +15,10 @@ namespace Infrastructure.Services
 			_songRepo = songRepo;
 		}
 		// Crud operations for playlists
-		public async Task<IEnumerable<Playlist>> GetAllPlaylistsAsync()
+		public IQueryable<Playlist> GetPlaylistsQuery()
 		{
-			return await _playlistRepo.GetAllAsync();
+			// Returns the unexecuted query so we could get count
+			return _playlistRepo.GetReadOnlyQuery();
 		}
 
 		public async Task<Playlist?> GetPlaylistByIdAsync(Guid id)

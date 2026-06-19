@@ -43,5 +43,10 @@ namespace Infrastructure.Repositories
 		{
 			await _context.SaveChangesAsync();
 		}
+		public IQueryable<T> GetReadOnlyQuery()
+		{
+			// AsNoTracking ensures no memory overhead, pure database reading
+			return _dbSet.AsNoTracking();
+		}
 	}
 }
