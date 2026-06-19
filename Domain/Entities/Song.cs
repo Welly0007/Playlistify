@@ -7,7 +7,7 @@
 		public string Artist { get; private set; } = string.Empty;
 		public TimeSpan Duration { get; private set; }
 
-		// Navigation property for many-to-many relationship
+		// navigation relationship for playlists, many to many
 		public ICollection<Playlist> Playlists { get; private set; } = new List<Playlist>();
 
 		public Song(Guid id, string title, string artist, TimeSpan duration)

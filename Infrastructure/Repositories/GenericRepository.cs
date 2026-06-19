@@ -45,7 +45,6 @@ namespace Infrastructure.Repositories
 		}
 		public IQueryable<T> GetReadOnlyQuery()
 		{
-			// AsNoTracking ensures no memory overhead, pure database reading
 			return _dbSet.AsNoTracking();
 		}
 	}
