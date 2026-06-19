@@ -1,4 +1,8 @@
+using Domain.Interfaces.Repositories;
+using Domain.Interfaces.Services;
 using Infrastructure.Data;
+using Infrastructure.Repositories;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace API
@@ -20,6 +24,10 @@ namespace API
 				options.UseSqlServer(
 					builder.Configuration.GetConnectionString("DefaultConnection"));
 			});
+
+			builder.Services.AddScoped<IPlaylistService, PlaylistService>();
+			builder.Services.AddScoped<IPlaylistRepository, PlaylistRepository>();
+			builder.Services.AddScoped<ISongRepository, SongRepository>();
 
 			var app = builder.Build();
 
