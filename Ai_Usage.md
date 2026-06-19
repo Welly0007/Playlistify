@@ -1,6 +1,6 @@
 ﻿# How I Used AI & Architectural Decisions
 
-Just a quick breakdown of where I used AI during this task
+Just a quick breakdown of where I used AI during this task Model used: Gemini 3.5 Flash
 
 ## 1. Architecture decisions vs YAGNI
 
