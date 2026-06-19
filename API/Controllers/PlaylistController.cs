@@ -66,7 +66,7 @@ namespace API.Controllers
 					TotalDuration = playlist.TotalDuration,
 					SongCount = playlist.Songs.Count
 				};
-				return Ok(playlist);
+				return Ok(response);
 			}
 			catch (Exception ex)
 			{

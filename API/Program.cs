@@ -49,3 +49,4 @@ namespace API
 		}
 	}
 }
+public partial class Program { }
