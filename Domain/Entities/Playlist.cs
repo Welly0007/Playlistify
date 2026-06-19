@@ -13,9 +13,6 @@
 		private readonly List<Song> _songs = new();
 		public IReadOnlyCollection<Song> Songs => _songs.AsReadOnly();
 
-		// Private constructor for EF Core
-		private Playlist() { }
-
 		public Playlist(string name, string description)
 		{
 			Id = Guid.NewGuid();
@@ -30,6 +27,23 @@
 				throw new ArgumentNullException(nameof(song));
 
 			_songs.Add(song);
+		}
+
+		public void RemoveSong(Song song)
+		{
+			if (song == null)
+				throw new ArgumentNullException(nameof(song));
+
+			_songs.Remove(song);
+		}
+
+		public void Update(string name, string description)
+		{
+			if (string.IsNullOrWhiteSpace(name))
+				throw new ArgumentException("Playlist name cannot be empty.");
+
+			Name = name;
+			Description = description ?? string.Empty;
 		}
 	}
 }

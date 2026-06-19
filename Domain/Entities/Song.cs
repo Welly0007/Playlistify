@@ -10,8 +10,6 @@
 		// navigation property for with playlist, many to many
 		public ICollection<Playlist> Playlists { get; private set; } = new List<Playlist>();
 
-		private Song() { }
-
 		public Song(Guid id, string title, string artist, TimeSpan duration)
 		{
 			Id = id == Guid.Empty ? Guid.NewGuid() : id;

@@ -1,5 +1,4 @@
 ﻿using API.DTOs;
-using API.DTOs;
 using Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -93,5 +92,50 @@ namespace API.Controllers
 			}
 		}
 
+		[HttpDelete("{id}/songs/{songId}")]
+		public async Task<IActionResult> RemoveSongFromPlaylist(Guid id, Guid songId)
+		{
+			try
+			{
+				await _playlistService.RemoveSongFromPlaylistAsync(id, songId);
+				return NoContent();
+			}
+			catch (ArgumentException ex)
+			{
+				return BadRequest(ex.Message);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, ex.Message);
+			}
+		}
+
+		[HttpPut("{id}")]
+		public async Task<IActionResult> UpdatePlaylist(Guid id, [FromBody] CreatePlaylistDto dto)
+		{
+			try
+			{
+				await _playlistService.UpdatePlaylistAsync(id, dto.Name, dto.Description);
+				return NoContent();
+			}
+			catch (ArgumentException ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
+
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> DeletePlaylist(Guid id)
+		{
+			try
+			{
+				await _playlistService.DeletePlaylistAsync(id);
+				return NoContent();
+			}
+			catch (ArgumentException ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
 	}
 }

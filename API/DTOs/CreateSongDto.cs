@@ -2,8 +2,8 @@
 {
 	public class CreateSongDto
 	{
-		public required string Title { get; set; }
-		public required string Artist { get; set; }
-		public required TimeSpan Duration { get; set; }
+		public string Title { get; set; } = string.Empty;
+		public string Artist { get; set; } = string.Empty;
+		public TimeSpan Duration { get; set; }
 	}
 }
